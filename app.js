@@ -57,7 +57,36 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 4. Premium Toast Notification implementation
+  // 4. Scroll to bottom functionality (Telegram style)
+  const scrollBtn = document.getElementById('scroll-to-bottom');
+  if (scrollBtn) {
+    scrollBtn.addEventListener('click', () => {
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: 'smooth'
+      });
+    });
+
+    // Toggle button visibility based on scroll position / CTA visibility
+    const toggleScrollBtnVisibility = () => {
+      const ctaButton = document.querySelector('.cta-button');
+      if (ctaButton) {
+        const rect = ctaButton.getBoundingClientRect();
+        // If CTA button is visible in the viewport, hide the scroll button
+        if (rect.top < window.innerHeight && rect.bottom >= 0) {
+          scrollBtn.classList.add('scroll-btn-hidden');
+        } else {
+          scrollBtn.classList.remove('scroll-btn-hidden');
+        }
+      }
+    };
+
+    window.addEventListener('scroll', toggleScrollBtnVisibility);
+    // Initial check on load
+    setTimeout(toggleScrollBtnVisibility, 500);
+  }
+
+  // 5. Premium Toast Notification implementation
   function showToast(message) {
     // Remove existing toast if present
     const existingToast = document.querySelector('.premium-toast');
